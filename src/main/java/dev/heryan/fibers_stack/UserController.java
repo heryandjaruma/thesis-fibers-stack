@@ -43,10 +43,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getAll() {
+    public List<User> getAll(@RequestParam(defaultValue = "-1") long take) {
         log.info("Getting all users");
         try {
-            return userRepository.findAll();
+            if (take == -1) {
+                return userRepository.findAll();
+            }
+
+            return userRepository.findAll(take);
         } catch (Exception e) {
             log.error("Error while getting all users:", e);
             throw new RuntimeException(e);
