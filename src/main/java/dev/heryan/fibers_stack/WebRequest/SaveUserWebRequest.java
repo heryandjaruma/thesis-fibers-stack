@@ -1,4 +1,4 @@
-package dev.heryan.fibers_stack;
+package dev.heryan.fibers_stack.WebRequest;
 
 import lombok.Builder;
 import lombok.Data;

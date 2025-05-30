@@ -1,10 +1,11 @@
-package dev.heryan.fibers_stack;
+package dev.heryan.fibers_stack.Controller;
 
+import dev.heryan.fibers_stack.Model.User;
+import dev.heryan.fibers_stack.Repository.UserRepository;
+import dev.heryan.fibers_stack.WebRequest.SaveUserWebRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -15,9 +16,10 @@ public class UserController {
 
     @GetMapping
     public String get() {
-        System.out.println(Thread.currentThread().isVirtual());
-        System.out.println(Thread.currentThread().getThreadGroup().getName());
-        return Thread.currentThread().isVirtual() ? Thread.currentThread().getName() : "Hello World";
+        String ret = "";
+        ret += "Running in Virtual Thread: " + Thread.currentThread().isVirtual() + "\n";
+        ret += "Thread Group: " + Thread.currentThread().getThreadGroup().getName() + "\n";
+        return ret;
     }
 
     @PostMapping("/user")
@@ -38,21 +40,6 @@ public class UserController {
             return user;
         } catch (Exception e) {
             log.error("Error while saving user:", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    @GetMapping("/users")
-    public List<User> getAll(@RequestParam(defaultValue = "-1") long take) {
-        log.info("Getting all users");
-        try {
-            if (take == -1) {
-                return userRepository.findAll();
-            }
-
-            return userRepository.findAll(take);
-        } catch (Exception e) {
-            log.error("Error while getting all users:", e);
             throw new RuntimeException(e);
         }
     }

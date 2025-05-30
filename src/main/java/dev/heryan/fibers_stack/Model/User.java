@@ -1,4 +1,4 @@
-package dev.heryan.fibers_stack;
+package dev.heryan.fibers_stack.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
