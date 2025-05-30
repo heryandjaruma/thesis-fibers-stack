@@ -14,14 +14,6 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
-    @GetMapping
-    public String get() {
-        String ret = "";
-        ret += "Running in Virtual Thread: " + Thread.currentThread().isVirtual() + "\n";
-        ret += "Thread Group: " + Thread.currentThread().getThreadGroup().getName() + "\n";
-        return ret;
-    }
-
     @PostMapping("/user")
     public User post(@RequestBody SaveUserWebRequest saveUserWebRequest) {
         log.info("Saving user {}", saveUserWebRequest);
