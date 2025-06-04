@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Slf4j
 @RestController
 public class UserController {
@@ -36,6 +38,25 @@ public class UserController {
         }
     }
 
+    @GetMapping("/user/{id}")
+    public User getUser(@PathVariable String id) {
+        log.info("Getting user {}", id);
+        try {
+            Optional<User> user = userRepository.findById(id);
+
+            if (user.isPresent()) {
+                log.info("User get: {}", user.get());
+                return user.get();
+            } else {
+                log.info("User not found");
+                return null;
+            }
+        } catch (Exception e) {
+            log.error("Error while getting user:", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     @PutMapping("/user")
     public User updateUser(@RequestBody SaveUserWebRequest saveUserWebRequest) {
         log.info("Updating user {}", saveUserWebRequest);
@@ -58,21 +79,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/users")
-    Boolean deleteUsers() {
-        log.info("Deleting all users");
-        try {
-            userRepository.deleteAll();
-            log.info("Users deleted");
-            return true;
-        } catch (Exception e) {
-            log.error("Error while deleting all users:", e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    @DeleteMapping("/user")
-    Boolean deleteUser(@RequestParam("id") String id) {
+    @DeleteMapping("/user/{id}")
+    Boolean deleteUser(@PathVariable String id) {
         log.info("Deleting user {}", id);
         try {
             userRepository.deleteById(id);
